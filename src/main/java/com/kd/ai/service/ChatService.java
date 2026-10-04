@@ -4,6 +4,9 @@ import com.kd.ai.dto.ChatRequest;
 import com.kd.ai.dto.ChatResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,8 +15,15 @@ public class ChatService {
 
     private final ChatClient chatClient;
 
-    public ChatService(ChatClient.Builder chBuilder) {
-        this.chatClient = chBuilder.build();
+    public ChatService(ChatClient.Builder chBuilder, VectorStore vectorStore) {
+      //  this.chatClient = chBuilder.build(); // this for simple chat client
+        // for handling RAG
+        this.chatClient = chBuilder
+                .defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore)
+                        .searchRequest(SearchRequest.builder().build())
+                        .build())
+                .build();
+
     }
 
     public ChatResponse processMessage(ChatRequest chatRequest) {
