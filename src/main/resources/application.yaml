@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: spring-ai-poc
+
+  ai:
+    openai:
+      api-key: ${OPENROUTER_API_KEY}
+      base-url: https://openrouter.ai/api/v1
+      chat:
+        options:
+          model: nvidia/nemotron-3.5-lightning:free
