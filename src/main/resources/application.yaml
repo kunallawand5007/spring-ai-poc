@@ -9,3 +9,15 @@ spring:
       chat:
         options:
           model: nvidia/nemotron-3.5-lightning:free
+    vectorstore:
+      chroma:
+        client:
+          host: https://api.trychroma.com
+          port: 443
+          key-token: ${CHROMA_API_KEY}
+
+        tenant-name: ${CHROMA_TENANT}
+        database-name: ${CHROMA_DATABASE}
+
+        collection-name: SpringAI-POC
+        initialize-schema: false
