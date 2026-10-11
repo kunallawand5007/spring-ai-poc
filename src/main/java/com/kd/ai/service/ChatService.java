@@ -18,25 +18,20 @@ public class ChatService {
     public ChatService(ChatClient.Builder chBuilder, VectorStore vectorStore) {
       //  this.chatClient = chBuilder.build(); // this for simple chat client
         // for handling RAG
-        this.chatClient = chBuilder
-                .defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore)
-                        .searchRequest(SearchRequest.builder().build())
-                        .build())
-                .build();
-
+      //  this.chatClient = chBuilder.defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore).searchRequest(SearchRequest.builder().build()).build()).build();
+      this.chatClient=chBuilder.defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore).build()).build();
     }
 
     public ChatResponse processMessage(ChatRequest chatRequest) {
         try {
 
+            log.info("calling chat client....");
+
             String chatResponse = chatClient.prompt()
                     .user(chatRequest.message())
                     .call()
                     .content();
-
             return new ChatResponse(chatResponse);
-
-
         } catch (Exception e) {
             e.printStackTrace();
             log.info("exception occuured while promting...", e);
